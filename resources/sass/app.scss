@@ -1,0 +1,28 @@
+// Variables
+@import 'variables';
+
+// Bulma
+@import '~bulma/bulma';
+
+// Font-Awesome
+@import "~font-awesome/scss/font-awesome";
+
+// Buefy
+@import "~buefy/src/scss/buefy";
+
+// bulma extensions
+@import "~bulma-extensions/dist/css/bulma-extensions.min.css";
+
+//bulma calender
+@import "~bulma-calendar/dist/css/bulma-calendar.min.css";
+// Custom SASS Pages
+
+@import "helpers";
+@import "styles";
+@import "sidebar";
+@import "overrides";
+
+.daily-evaluation-dashboard{
+  background-color: #ffffff; box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
+  color: #4a4a4a;
+}

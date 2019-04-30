@@ -1,0 +1,32 @@
+.navbar {
+  box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
+  color: #4a4a4a;
+}
+
+//data tables
+
+div.dt-buttons {
+  position: relative;
+  float: right;
+  margin-right: 2%;
+}
+
+table.dataTable tbody th, table.dataTable tbody td {
+  padding: 2px 3px;
+}
+
+
+html {
+  background-color: #eeeff3;
+  overflow-x: hidden;
+}
+.error_chart{
+  width:100% !important;
+  height:600px !important;
+
+}
+
+#myiChart{
+  width:80% !important;
+  height:300px !important;
+}
