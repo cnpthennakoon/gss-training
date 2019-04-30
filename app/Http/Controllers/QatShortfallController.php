@@ -16,9 +16,14 @@ class QatShortfallController extends Controller
      */
     public function index()
     {
+        if (Auth::user()){
         $shortfalls = QatShortfall::paginate(20);
 
         return view('qat-shortfall.index')->withShortfalls($shortfalls);
+        }else{
+
+            return redirect()->route('login');
+        }
     }
 
     /**
@@ -28,9 +33,14 @@ class QatShortfallController extends Controller
      */
     public function create()
     {
+        if (Auth::user()){
         $projectsList = Project::orderBy('name', 'asc')->pluck('name', 'id')->prepend('', '');
 
         return view('qat-shortfall.create', compact('projectsList'));
+        }else{
+
+            return redirect()->route('login');
+        }
     }
 
     /**
@@ -41,6 +51,7 @@ class QatShortfallController extends Controller
      */
     public function store(Request $request)
     {
+        if (Auth::user()){
         $this->validate($request, [
             'project_id' => ['required', 'numeric', 'unique:qat_shortfalls'],
         ]);
@@ -55,6 +66,10 @@ class QatShortfallController extends Controller
         $qat_shortfall->save();
 
         return redirect()->route('qat-shortfall.index');
+        }else{
+
+            return redirect()->route('login');
+        }
     }
 
     /**
@@ -76,9 +91,14 @@ class QatShortfallController extends Controller
      */
     public function edit(QatShortfall $qatShortfall)
     {
+        if (Auth::user()){
         $projectsList = Project::orderBy('name', 'asc')->pluck('name', 'id');
 
         return view('qat-shortfall.edit', compact('qatShortfall','projectsList'));
+        }else{
+
+            return redirect()->route('login');
+        }
     }
 
     /**
@@ -90,6 +110,7 @@ class QatShortfallController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (Auth::user()){
         $qat_shortfall = QatShortfall::findOrFail($id);
         $qat_shortfall->project_id = $request->project_id;
         $qat_shortfall->gssc_shortfall = $request->gssc_shortfall;
@@ -99,6 +120,10 @@ class QatShortfallController extends Controller
 
 
         return redirect()->route('qat-shortfall.index');
+        }else{
+
+            return redirect()->route('login');
+        }
     }
 
     /**

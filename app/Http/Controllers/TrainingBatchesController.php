@@ -39,8 +39,13 @@ class TrainingBatchesController extends Controller
 //        }
 
 //        return view('training.training-batch-data.index')->withBatches($batches);
-        $trainingBatches = TrainingBatch::orderBy('created_at', 'desc')->paginate(20);
-        return view('training.training-batch.index')->withTrainingBatches($trainingBatches);
+        if (Auth::user()) {
+            $trainingBatches = TrainingBatch::orderBy('created_at', 'desc')->paginate(20);
+            return view('training.training-batch.index')->withTrainingBatches($trainingBatches);
+        }else{
+
+            return redirect()->route('login');
+        }
     }
 
     /**
@@ -50,6 +55,7 @@ class TrainingBatchesController extends Controller
      */
     public function create()
     {
+        if (Auth::user()) {
         $projectsList= Project::orderBy('name', 'asc')->pluck('name', 'id')->prepend('', '');
         $projectStatusList= TrainingProjectStatus::orderBy('name', 'asc')->pluck('name', 'id')->prepend('', '');
         $trainingCentersList= TrainingCenter::orderBy('name', 'asc')->pluck('name', 'id')->prepend('', '');
@@ -57,7 +63,10 @@ class TrainingBatchesController extends Controller
         $trainingBatchTypesList = TrainingBatchType::orderBy('name', 'asc')->pluck('name', 'id')->prepend('', '');
 
         return view('training.training-batch.create', compact('projectsList', 'projectStatusList', 'trainingCentersList', 'batchStatusList', 'trainingBatchTypesList'));
+        }else{
 
+            return redirect()->route('login');
+        }
     }
 
     /**
@@ -68,6 +77,7 @@ class TrainingBatchesController extends Controller
      */
     public function store(Request $request)
     {
+        if (Auth::user()) {
         $this->validate($request, [
             'project_id' => 'required',
             'training_project_status_id' => 'required',
@@ -99,6 +109,10 @@ class TrainingBatchesController extends Controller
         $trainingBatch->save();
 
         return redirect()->route('training-batch.index');
+        }else{
+
+            return redirect()->route('login');
+        }
     }
 
     /**
@@ -109,7 +123,13 @@ class TrainingBatchesController extends Controller
      */
     public function show(TrainingBatch $trainingBatch)
     {
+        if (Auth::user()) {
         return view('training.training-batch.show', compact('trainingBatch'));
+            return redirect()->route('training-batch.index');
+        }else{
+
+            return redirect()->route('login');
+        }
     }
 
     /**
@@ -120,6 +140,7 @@ class TrainingBatchesController extends Controller
      */
     public function edit(TrainingBatch $trainingBatch)
     {
+        if (Auth::user()) {
         $projectsList= Project::orderBy('name', 'asc')->pluck('name', 'id')->prepend('', '');
         $projectStatusList= TrainingProjectStatus::orderBy('name', 'asc')->pluck('name', 'id')->prepend('', '');
         $trainingCentersList= TrainingCenter::orderBy('name', 'asc')->pluck('name', 'id')->prepend('', '');
@@ -128,7 +149,11 @@ class TrainingBatchesController extends Controller
         $trainingNaturesList = TrainingNature::orderBy('name', 'asc')->pluck('name', 'id')->prepend('', '');
 
         return view('training.training-batch.edit', compact('trainingBatch','projectsList', 'projectStatusList', 'trainingCentersList', 'batchStatusList', 'trainingBatchTypesList', 'trainingNaturesList'));
-    }
+        }else{
+
+            return redirect()->route('login');
+        }
+        }
 
     /**
      * Update the specified resource in storage.
@@ -139,6 +164,7 @@ class TrainingBatchesController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (Auth::user()) {
         $this->validate($request, [
             'project_id' => 'required',
             'training_project_status_id' => 'required',
@@ -171,6 +197,10 @@ class TrainingBatchesController extends Controller
 
 
         return redirect()->route('training-batch.index');
+        }else{
+
+            return redirect()->route('login');
+        }
     }
 
     /**

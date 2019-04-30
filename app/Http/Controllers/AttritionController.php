@@ -20,9 +20,13 @@ class AttritionController extends Controller
      */
     public function index()
     {
+        if (Auth::user()){
         $attrition = Attrition::paginate(20);
 
         return view('attrition.index')->withAttrition($attrition);
+        }else{
+            return redirect()->route('login');
+        }
     }
 
     /**
@@ -32,12 +36,17 @@ class AttritionController extends Controller
      */
     public function create()
     {
-        $projectsList = Project::orderBy('name', 'asc')->pluck('name', 'id')->prepend('', '');
-        $attritionTypeList = AttritionType::orderBy('name', 'asc')->pluck('name', 'id')->prepend('', '');
-        $attritionReasonList = AttritionReason::orderBy('name', 'asc')->pluck('name', 'id')->prepend('', '');
-        $trainingCenterList = TrainingCenter::orderBy('name', 'asc')->pluck('name', 'id')->prepend('', '');
+        if (Auth::user()){
+            $projectsList = Project::orderBy('name', 'asc')->pluck('name', 'id')->prepend('', '');
+            $attritionTypeList = AttritionType::orderBy('name', 'asc')->pluck('name', 'id')->prepend('', '');
+            $attritionReasonList = AttritionReason::orderBy('name', 'asc')->pluck('name', 'id')->prepend('', '');
+            $trainingCenterList = TrainingCenter::orderBy('name', 'asc')->pluck('name', 'id')->prepend('', '');
 
-        return view('attrition.create', compact('projectsList', 'attritionReasonList', 'attritionTypeList', 'trainingCenterList'));
+            return view('attrition.create', compact('projectsList', 'attritionReasonList', 'attritionTypeList', 'trainingCenterList'));
+        }else{
+            return redirect()->route('login');
+        }
+
     }
 
     /**
@@ -48,25 +57,31 @@ class AttritionController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'qat_id' => 'required',
-            'training_batch_id' => 'required',
-            'last_working_date' => 'required',
-            'attrition_type_id' => 'required',
-            'attrition_reason_id' => 'required',
-        ]);
+        if (Auth::user()){
+            $this->validate($request, [
+                'qat_id' => 'required',
+                'training_batch_id' => 'required',
+                'last_working_date' => 'required',
+                'attrition_type_id' => 'required',
+                'attrition_reason_id' => 'required',
+            ]);
 
-        $attrition = new Attrition();
-        $attrition->qat_id = $request->qat_id;
-        $attrition->training_batch_id = $request->training_batch_id;
-        $attrition->last_working_date = $request->last_working_date;
-        $attrition->attrition_type_id = $request->attrition_type_id;
-        $attrition->attrition_reason_id = $request->attrition_reason_id;
-        $attrition->comment = $request->comment;
-        $attrition->user_id = Auth::id();
-        $attrition->save();
+            $attrition = new Attrition();
+            $attrition->qat_id = $request->qat_id;
+            $attrition->training_batch_id = $request->training_batch_id;
+            $attrition->last_working_date = $request->last_working_date;
+            $attrition->attrition_type_id = $request->attrition_type_id;
+            $attrition->attrition_reason_id = $request->attrition_reason_id;
+            $attrition->comment = $request->comment;
+            $attrition->user_id = Auth::id();
+            $attrition->save();
 
-        return redirect()->route('attrition.index');
+            return redirect()->route('attrition.index');
+        }else{
+
+            return redirect()->route('login');
+        }
+
     }
 
     /**
@@ -88,6 +103,7 @@ class AttritionController extends Controller
      */
     public function edit(Attrition $attrition)
     {
+        if (Auth::user()){
         $attritionTypeList = AttritionType::orderBy('name', 'asc')->pluck('name', 'id')->prepend('', '');
         $attritionReasonList = AttritionReason::orderBy('name', 'asc')->pluck('name', 'id')->prepend('', '');
 
@@ -100,6 +116,10 @@ class AttritionController extends Controller
 //        return $training_batch_data;
 
         return view('attrition.edit', compact('attrition','attritionReasonList', 'attritionTypeList', 'training_batch_data'));
+        }else{
+
+            return redirect()->route('login');
+        }
     }
 
     /**
@@ -111,6 +131,7 @@ class AttritionController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (Auth::user()){
         $this->validate($request, [
             'qat_id' => 'required',
             'training_batch_id' => 'required',
@@ -129,6 +150,10 @@ class AttritionController extends Controller
         $attrition->save();
 
         return redirect()->route('attrition.index');
+        }else{
+
+            return redirect()->route('login');
+        }
     }
 
     /**

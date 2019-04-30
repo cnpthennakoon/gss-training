@@ -17,6 +17,8 @@ Route::get('/', function () {
 
 Auth::routes();
 
+
+
 Route::prefix('daily-evaluations')->group(function (){
     Route::get('/', 'DailyEvaluationsDashboardController@index')->name('daily-evaluations');
     Route::resource('/daily-audits', 'DailyEvaluationsController');
@@ -59,4 +61,3 @@ Route::prefix('master-data')->group(function (){
 });
 
 Route::get('/home', 'HomeController@index')->name('home');
-
